@@ -66,15 +66,24 @@ def find_true_position(position):
 
 # Draws a cirecle in the position given @todo finish the function
 def draw_circle(color):
-	position_to_put = [get_mouse_x_position(board_size)]
-	col = 0
-	while col <= len(board_pieces_array) - 1:
-		if board_pieces_array[col][position_to_put[0]] == 0:
-			position_to_put.append(col)
+	position_to_put = [get_mouse_x_position(board_size)] #Position for the piece to go, has only the x_pos for now
+	#Itterates through the loop finding the lowest place that's empty and appends it to position_to_put
+	for i in range(len(board_pieces_array)):
+		if board_pieces_array[i][position_to_put[0]] == 0:
+			position_to_put.append(i)
 			break
-		col += 1
+
+	#The position of the circle before the change and the draw
+	init_position = position_to_put
+
 	position_to_put = find_true_position(position_to_put)
 	pygame.draw.circle(gameDisplay, color, position_to_put, 40)
+
+	# Updates the board_pieces_array for what piece was sent where
+	if color == _YELLOW:
+		board_pieces_array[init_position[1]][init_position[0]] = 1
+	elif color == _RED:
+		board_pieces_array[init_position[1]][init_position[0]] = 2
 
 
 
@@ -88,12 +97,12 @@ def run(board_size):
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				game_exit = True
+			elif event.type == pygame.MOUSEBUTTONDOWN:
+				draw_circle(_YELLOW)
 
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_ESCAPE:
 					game_exit = True
-				if event.key == pygame.K_UP:
-					draw_circle(_YELLOW)
 
 		draw_entire_board(board_size)
 		# draw_circle(_YELLOW)
