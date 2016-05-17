@@ -1,4 +1,5 @@
 import pygame
+import math
 
 #Connect Four Game
 
@@ -14,6 +15,7 @@ _YELLOW = (255, 255, 0)
 board_size = (7 * 100 + 10, 7 * 100 + 5)
 board_line_width = 5
 board_space_size = 100
+board_pieces_array = [[0 for i in range(7)] for j in range(6)]
 
 
 #Board init
@@ -38,19 +40,33 @@ def draw_horizontal_lines_and_borders(board_size):
 #Draws the vertical lines with borders
 def draw_vertical_lines_and_borders(board_size):
 	for i in range(8):
-		pygame.draw.rect(gameDisplay, _BLUE, [0, (i + 1) * 100, board_size[1], board_line_width])
+		pygame.draw.rect(gameDisplay, _BLUE, [0, (i + 1) * board_space_size, board_size[1], board_line_width])
 
 
 #Draws the entire board, combines all board drawing functions
 def draw_entire_board(board_size):
+
 	draw_horizontal_lines_and_borders(board_size)
 	draw_vertical_lines_and_borders(board_size)
 
 
+#Draws a cirecle in the position given @todo finish the function
+def draw_circle(x_position, color):
+	pass
+	
+
+#Returns the current position of the mouse when called
+def get_mouse_x_position(board_size):
+	position = pygame.mouse.get_pos()
+	return math.floor((position[0] - 5) / board_space_size)
+
 
 #Main logic of the game
 def run(board_size):
+	#Function Variables
 	game_exit = False
+	current_player = 0
+
 	while not game_exit:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
