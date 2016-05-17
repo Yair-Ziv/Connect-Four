@@ -16,6 +16,7 @@ board_size = (7 * 100 + 10, 7 * 100 + 5)
 board_line_width = 5
 board_space_size = 100
 board_pieces_array = [[0 for i in range(7)] for j in range(6)]
+circle_radius = board_space_size / 2 - 15
 
 
 #Board init
@@ -43,6 +44,13 @@ def draw_vertical_lines_and_borders(board_size):
 		pygame.draw.rect(gameDisplay, _BLUE, [0, (i + 1) * board_space_size, board_size[1], board_line_width])
 
 
+#Returns the current position of the mouse when called
+def get_mouse_x_position(board_size):
+	position = pygame.mouse.get_pos()
+	position = int(math.floor((position[0] - 5) / board_space_size))
+	return position
+
+
 #Draws the entire board, combines all board drawing functions
 def draw_entire_board(board_size):
 
@@ -50,15 +58,23 @@ def draw_entire_board(board_size):
 	draw_vertical_lines_and_borders(board_size)
 
 
-#Draws a cirecle in the position given @todo finish the function
-def draw_circle(x_position, color):
+#Find true place to put the circle in
+def find_true_position(position):
 	pass
-	
 
-#Returns the current position of the mouse when called
-def get_mouse_x_position(board_size):
-	position = pygame.mouse.get_pos()
-	return math.floor((position[0] - 5) / board_space_size)
+
+# Draws a cirecle in the position given @todo finish the function
+def draw_circle(color):
+	position_to_put = [get_mouse_x_position(board_size), 0]
+	i = len(board_pieces_array) - 1
+	while i >= 0:
+		if board_pieces_array[position_to_put[0]][i] == 0:
+			position_to_put[1] = i
+		i -= 1
+	pygame.draw.circle(gameDisplay, color, position_to_put, circle_radius)
+	print position_to_put
+
+
 
 
 #Main logic of the game
@@ -73,6 +89,7 @@ def run(board_size):
 				game_exit = True
 
 		draw_entire_board(board_size)
+		draw_circle(_YELLOW)
 		pygame.display.update()
 
 run(board_size)
