@@ -60,21 +60,20 @@ def draw_entire_board(board_size):
 #Find true place to put the circle in
 def find_true_position(position):
 	x_position = 55 + position[0] * board_space_size
-	y_position = (board_space_size * position[1]) + 10
+	y_position = board_size[1] - 50 - (100 * position[1])
 	return [x_position, y_position]
 
 
 # Draws a cirecle in the position given @todo finish the function
 def draw_circle(color):
 	position_to_put = [get_mouse_x_position(board_size)]
-	col = len(board_pieces_array) - 1
-	while col >= 0:
+	col = 0
+	while col <= len(board_pieces_array) - 1:
 		if board_pieces_array[col][position_to_put[0]] == 0:
 			position_to_put.append(col)
 			break
-		col -= 1
+		col += 1
 	position_to_put = find_true_position(position_to_put)
-	print position_to_put
 	pygame.draw.circle(gameDisplay, color, position_to_put, 40)
 
 
