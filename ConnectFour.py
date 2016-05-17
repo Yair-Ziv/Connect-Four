@@ -68,7 +68,7 @@ def find_true_position(position):
 #A function that checks if the game has been won, checks every column, row, diagonal and every way someone could have won the game
 def check_won():
 	#Check rows
-	for i in range(len(screen_size)):
+	for i in range(len(board_pieces_array)):
 		for j in range(4):
 			if board_pieces_array[i][j] == board_pieces_array[i][j + 1] and board_pieces_array[i][j + 1] == board_pieces_array[i][j + 2] and board_pieces_array[i][j + 2] == board_pieces_array[i][j + 3] and not board_pieces_array[i][j] == 0:
 				return True
