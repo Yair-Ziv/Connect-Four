@@ -25,7 +25,7 @@ pygame.display.update()
 
 
 #Functions
-#Draws the horizontal board lines
+#Draws the horizontal board and border lines
 def draw_horizontal_lines_and_borders(board_size):
 	size = board_size[0] - 105
 	for i in range(8):
@@ -35,11 +35,16 @@ def draw_horizontal_lines_and_borders(board_size):
 			pygame.draw.rect(gameDisplay, _BLUE, [i * board_space_size + 5, 100, board_line_width, size])
 
 
+#Draws the vertical lines with borders
+def draw_vertical_lines_and_borders(board_size):
+	for i in range(8):
+		pygame.draw.rect(gameDisplay, _BLUE, [0, (i + 1) * 100, board_size[1], board_line_width])
 
 
 #Draws the entire board, combines all board drawing functions
 def draw_entire_board(board_size):
-	pass
+	draw_horizontal_lines_and_borders(board_size)
+	draw_vertical_lines_and_borders(board_size)
 
 
 
@@ -51,7 +56,7 @@ def run(board_size):
 			if event.type == pygame.QUIT:
 				game_exit = True
 
-		draw_horizontal_lines_and_borders(board_size)
+		draw_entire_board(board_size)
 		pygame.display.update()
 
 run(board_size)
