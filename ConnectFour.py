@@ -17,6 +17,7 @@ board_line_width = 5
 board_space_size = 100
 board_pieces_array = [[0 for i in range(7)] for j in range(6)]
 circle_radius = board_space_size / 2 - 15
+current_player = 0
 
 
 #Board init
@@ -66,8 +67,14 @@ def find_true_position(position):
 
 # Draws a cirecle in the position given @todo finish the function
 def draw_circle(color):
+	global current_player
 	position_to_put = [get_mouse_x_position(board_size)] #Position for the piece to go, has only the x_pos for now
 	#Itterates through the loop finding the lowest place that's empty and appends it to position_to_put
+	#If the culomn is full return and don't do a thing
+	if not board_pieces_array[len(board_pieces_array) - 1][position_to_put[0]] == 0:
+		return 
+
+	current_player += 1
 	for i in range(len(board_pieces_array)):
 		if board_pieces_array[i][position_to_put[0]] == 0:
 			position_to_put.append(i)
@@ -91,14 +98,16 @@ def draw_circle(color):
 def run(board_size):
 	#Function Variables
 	game_exit = False
-	current_player = 0
 
 	while not game_exit:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				game_exit = True
 			elif event.type == pygame.MOUSEBUTTONDOWN:
-				draw_circle(_YELLOW)
+				if current_player % 2 == 0:
+					draw_circle(_YELLOW)
+				else:
+					draw_circle(_RED)
 
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_ESCAPE:
