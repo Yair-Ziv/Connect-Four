@@ -12,7 +12,7 @@ _YELLOW = (255, 255, 0)
 
 
 #Variables
-board_size = (7 * 100 + 10, 7 * 100 + 5)
+screen_size = (7 * 100 + 10, 7 * 100 + 5)
 board_line_width = 5
 board_space_size = 100
 board_pieces_array = [[0 for i in range(7)] for j in range(6)]
@@ -22,7 +22,7 @@ current_player = 0
 
 #Board init
 pygame.init()
-gameDisplay = pygame.display.set_mode(board_size)
+gameDisplay = pygame.display.set_mode(screen_size)
 gameDisplay.fill(_WHITE)
 pygame.display.set_caption("Connect Four")
 pygame.display.update()
@@ -30,8 +30,8 @@ pygame.display.update()
 
 #Functions
 #Draws the horizontal board and border lines
-def draw_horizontal_lines_and_borders(board_size):
-	size = board_size[0] - 105
+def draw_horizontal_lines_and_borders(screen_size):
+	size = screen_size[0] - 105
 	for i in range(8):
 		if i == 0:
 			pygame.draw.rect(gameDisplay, _BLUE, [0, 100, board_line_width, size])
@@ -40,35 +40,43 @@ def draw_horizontal_lines_and_borders(board_size):
 
 
 #Draws the vertical lines with borders
-def draw_vertical_lines_and_borders(board_size):
+def draw_vertical_lines_and_borders(screen_size):
 	for i in range(8):
-		pygame.draw.rect(gameDisplay, _BLUE, [0, (i + 1) * board_space_size, board_size[1], board_line_width])
+		pygame.draw.rect(gameDisplay, _BLUE, [0, (i + 1) * board_space_size, screen_size[1], board_line_width])
 
 
 #Returns the current position of the mouse when called
-def get_mouse_x_position(board_size):
+def get_mouse_x_position(screen_size):
 	position = pygame.mouse.get_pos()
 	position = int(math.floor((position[0] - 5) / board_space_size))
 	return position
 
 
 #Draws the entire board, combines all board drawing functions
-def draw_entire_board(board_size):
-	draw_horizontal_lines_and_borders(board_size)
-	draw_vertical_lines_and_borders(board_size)
+def draw_entire_board(screen_size):
+	draw_horizontal_lines_and_borders(screen_size)
+	draw_vertical_lines_and_borders(screen_size)
 
 
 #Find true place to put the circle in
 def find_true_position(position):
 	x_position = 55 + position[0] * board_space_size
-	y_position = board_size[1] - 50 - (100 * position[1])
+	y_position = screen_size[1] - 50 - (100 * position[1])
 	return [x_position, y_position]
+
+
+#A function that checks if the game has been won, checks every column, row, diagonal and every way someone could have won the game
+def check_won():
+	for i in range(len(screen_size)):
+		for j in range(4):
+			if board_pieces_array[i][j] == board_pieces_array[i][j + 1] and board_pieces_array[i][j + 1] == board_pieces_array[i][j + 2] and board_pieces_array[i][j + 2] == board_pieces_array[i][j + 3] and not board_pieces_array[i][j] == 0:
+				return True
 
 
 # Draws a cirecle in the position given @todo finish the function
 def draw_circle(color):
-	global current_player
-	position_to_put = [get_mouse_x_position(board_size)] #Position for the piece to go, has only the x_pos for now
+	global current_player	
+	position_to_put = [get_mouse_x_position(screen_size)] #Position for the piece to go, has only the x_pos for now
 	#Itterates through the loop finding the lowest place that's empty and appends it to position_to_put
 	#If the culomn is full return and don't do a thing
 	if not board_pieces_array[len(board_pieces_array) - 1][position_to_put[0]] == 0:
@@ -91,11 +99,12 @@ def draw_circle(color):
 		board_pieces_array[init_position[1]][init_position[0]] = 1
 	elif color == _RED:
 		board_pieces_array[init_position[1]][init_position[0]] = 2
+	print check_won()
 
 
 
 #Main logic of the game
-def run(board_size):
+def run(screen_size):
 	#Function Variables
 	game_exit = False
 
@@ -113,8 +122,8 @@ def run(board_size):
 				if event.key == pygame.K_ESCAPE:
 					game_exit = True
 
-		draw_entire_board(board_size)
+		draw_entire_board(screen_size)
 		# draw_circle(_YELLOW)
 		pygame.display.update()
 
-run(board_size)
+run(screen_size)
