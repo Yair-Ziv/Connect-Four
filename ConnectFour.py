@@ -67,6 +67,9 @@ def find_true_position(position):
 
 #A function that checks if the game has been won, checks every column, row, diagonal and every way someone could have won the game
 def check_won():
+	#Checks if the current_player variable is more than the ammount alowed, meaning it's a tie
+	if current_player >= 6 * 7:
+		return True
 	#Check rows
 	for i in range(len(board_pieces_array)):
 		for j in range(4):
