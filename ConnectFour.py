@@ -79,6 +79,12 @@ def check_won():
 			if board_pieces_array[columns][rows] == board_pieces_array[columns + 1][rows] and board_pieces_array[columns + 1][rows] == board_pieces_array[columns + 2][rows] and board_pieces_array[columns + 2][rows] == board_pieces_array[columns + 3][rows] and not board_pieces_array[columns][rows] == 0:
 				return True
 
+	#Check diagonals to the right up
+	for rows in range(len(board_pieces_array[0]) - 3):
+		for columns in range(3):
+			if board_pieces_array[columns][rows] == board_pieces_array[columns + 1][rows + 1] and board_pieces_array[columns + 1][rows + 1] == board_pieces_array[columns + 2][rows + 2] and board_pieces_array[columns + 2][rows + 2] == board_pieces_array[columns + 3][rows + 3] and not board_pieces_array[columns][rows] == 0:
+				return True
+
 
 
 # Draws a cirecle in the position given @todo finish the function
