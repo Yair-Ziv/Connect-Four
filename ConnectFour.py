@@ -9,6 +9,7 @@ _BLACK = (0, 0, 0)
 _RED = (255, 0, 0)
 _BLUE = (0, 0, 255)
 _YELLOW = (255, 255, 0)
+_GREEN = (0, 255, 0)
 
 
 #Variables
@@ -26,6 +27,9 @@ gameDisplay = pygame.display.set_mode(screen_size)
 gameDisplay.fill(_WHITE)
 pygame.display.set_caption("Connect Four")
 pygame.display.update()
+
+#Pygame variables
+font = pygame.font.SysFont(None, 40, True, False)
 
 
 #Functions
@@ -68,7 +72,7 @@ def find_true_position(position):
 #A function that checks if the game has been won, checks every column, row, diagonal and every way someone could have won the game
 def check_won():
 	#Checks if the current_player variable is more than the ammount alowed, meaning it's a tie
-	if current_player >= 6 * 7:
+	if current_player >= 6 * 7 and current_player > 3:
 		return True
 
 	#Check rows
@@ -99,7 +103,7 @@ def check_won():
 
 # Draws a cirecle in the position given @todo finish the function
 def draw_circle(color):
-	global current_player	
+	global current_player
 	position_to_put = [get_mouse_x_position(screen_size)] #Position for the piece to go, has only the x_pos for now
 	#Itterates through the loop finding the lowest place that's empty and appends it to position_to_put
 	#If the culomn is full return and don't do a thing
@@ -126,28 +130,80 @@ def draw_circle(color):
 	print check_won()
 
 
+#Resets the board
+def board_reset():
+	global current_player
+	global board_pieces_array
+	current_player = 0
+	board_pieces_array = [[0 for i in range(7)] for j in range(6)]
+	gameDisplay.fill(_WHITE)
+
 
 #Main logic of the game
 def run(screen_size):
+	board_reset()
 	#Function Variables
 	game_exit = False
+	last_player = None
 
 	while not game_exit:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
-				game_exit = True
+				pygame.quit()
+				quit()
 			elif event.type == pygame.MOUSEBUTTONDOWN:
 				if current_player % 2 == 0:
 					draw_circle(_YELLOW)
+					last_player = "Yellow"
+					if check_won():
+						print_won(last_player)
+						return
 				else:
 					draw_circle(_RED)
+					last_player = "Red"
+					if check_won():
+						print_won(last_player)
+						return
 
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_ESCAPE:
-					game_exit = True
+					pygame.quit()
+				quit()
 
 		draw_entire_board(screen_size)
 		# draw_circle(_YELLOW)
 		pygame.display.update()
 
-run(screen_size)
+
+#Prints who won
+def print_won(color):
+	won_color = color
+
+	message = font.render("%s player won! play again?" % won_color, True, _GREEN)
+	gameDisplay.blit(message, [screen_size[0] / 2 - 200, screen_size[1] / 2])
+	
+	again_message = font.render('Enter to play again', True, _GREEN)
+	gameDisplay.blit(again_message, [screen_size[1] / 2 - 200, screen_size[0] / 2 - 50])
+
+	pygame.display.update()
+
+	game_exit = False
+
+	while not game_exit:
+		for event in pygame.event.get():
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_RETURN:
+					board_reset()
+					run(screen_size)
+					break
+				elif event.key == pygame.K_ESCAPE:
+					pygame.quit()
+					quit()
+			elif event.type == pygame.QUIT:
+				pygame.quit()
+				quit()
+
+
+
+if __name__ == "__main__":
+	run(screen_size)
