@@ -175,7 +175,7 @@ def run(screen_size):
 
 
 #Prints who won
-def _won(color):
+def print_won(color):
 	won_color = color
 
 	message = font.render("%s player won! play again?" % won_color, True, _GREEN)
