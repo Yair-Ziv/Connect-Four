@@ -70,6 +70,7 @@ def check_won():
 	#Checks if the current_player variable is more than the ammount alowed, meaning it's a tie
 	if current_player >= 6 * 7:
 		return True
+
 	#Check rows
 	for i in range(len(board_pieces_array)):
 		for j in range(4):
@@ -86,6 +87,12 @@ def check_won():
 	for rows in range(len(board_pieces_array[0]) - 3):
 		for columns in range(3):
 			if board_pieces_array[columns][rows] == board_pieces_array[columns + 1][rows + 1] and board_pieces_array[columns + 1][rows + 1] == board_pieces_array[columns + 2][rows + 2] and board_pieces_array[columns + 2][rows + 2] == board_pieces_array[columns + 3][rows + 3] and not board_pieces_array[columns][rows] == 0:
+				return True
+
+	#Check diagonals to the left up
+	for rows in range(3, len(board_pieces_array[0])):
+		for columns in range(3):
+			if board_pieces_array[columns][rows] == board_pieces_array[columns + 1][rows - 1] and board_pieces_array[columns  + 1][rows - 1] == board_pieces_array[columns + 2][rows - 2] and board_pieces_array[columns + 2][rows - 2] == board_pieces_array[columns + 3][rows - 3] and not board_pieces_array[columns][rows] == 0:
 				return True
 
 
