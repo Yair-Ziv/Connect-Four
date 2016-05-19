@@ -127,7 +127,6 @@ def draw_circle(color):
 		board_pieces_array[init_position[1]][init_position[0]] = 1
 	elif color == _RED:
 		board_pieces_array[init_position[1]][init_position[0]] = 2
-	print check_won()
 
 
 #Resets the board
@@ -176,7 +175,7 @@ def run(screen_size):
 
 
 #Prints who won
-def print_won(color):
+def _won(color):
 	won_color = color
 
 	message = font.render("%s player won! play again?" % won_color, True, _GREEN)
