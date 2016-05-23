@@ -19,6 +19,7 @@ board_space_size = 100
 board_pieces_array = [[0 for i in range(7)] for j in range(6)]
 circle_radius = board_space_size / 2 - 15
 current_player = 0
+max_plays = 7 * 6
 
 
 #Board init
@@ -151,7 +152,9 @@ def run(screen_size):
 				pygame.quit()
 				quit()
 			elif event.type == pygame.MOUSEBUTTONDOWN:
-				if current_player % 2 == 0:
+				if current_player == max_plays - 1:
+					print_won('No ')
+				elif current_player % 2 == 0:
 					draw_circle(_YELLOW)
 					last_player = "Yellow"
 					if check_won():
@@ -179,10 +182,10 @@ def print_won(color):
 	won_color = color
 
 	message = font.render("%s player won! play again?" % won_color, True, _GREEN)
-	gameDisplay.blit(message, [screen_size[0] / 2 - 200, screen_size[1] / 2])
+	gameDisplay.blit(message, [5, 5])
 	
 	again_message = font.render('Enter to play again', True, _GREEN)
-	gameDisplay.blit(again_message, [screen_size[1] / 2 - 200, screen_size[0] / 2 - 50])
+	gameDisplay.blit(again_message, [5, 50])
 
 	pygame.display.update()
 
